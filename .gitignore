@@ -1,4 +1,4 @@
-# I don't see a need for a gitignore as downloading a .zip only contains the .gd script, but I can add one just for the sake of adding it
+# I don't see a need for a gitignore as downloading a .zip only contains the GDScript file, but I surely can add one just for the sake of adding it
 
 # Godot 4+ specific ignores
 .godot/
