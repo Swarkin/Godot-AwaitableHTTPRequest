@@ -1,0 +1,4 @@
+* text=auto eol=lf
+
+/**                         export-ignore
+/AwaitableHTTPRequest.gd    !export-ignore
