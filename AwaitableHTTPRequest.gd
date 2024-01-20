@@ -1,6 +1,9 @@
 extends HTTPRequest
 class_name AwaitableHTTPRequest
-## Awaitable HTTP Request Node v1.3.1 by swark1n
+## Awaitable HTTP Request Node v1.4.0 by swark1n
+
+signal request_finished			## Emits once the current request finishes, right before [member is_requesting] is set to false.
+var is_requesting := false  ## Whether the node is busy performing a request.
 
 ## A dataclass returned by [method AwaitableHTTPRequest.async_request].
 class HTTPResult extends RefCounted:
@@ -55,9 +58,16 @@ class HTTPResult extends RefCounted:
 ##        print(r.json['bio'])              # fox.
 ##[/codeblock]
 func async_request(url: String, method := HTTPClient.Method.METHOD_GET, custom_headers := PackedStringArray(), request_body := '') -> HTTPResult:
+	is_requesting = true
+
 	var e := request(url, custom_headers, method, request_body)
 	if e:
 		return HTTPResult._from_error(e)
 
-	@warning_ignore('unsafe_cast')var result := await request_completed as Array
+	@warning_ignore('unsafe_cast')
+	var result := await request_completed as Array
+
+	request_finished.emit()
+	is_requesting = false
+
 	return HTTPResult._from_array(result)
