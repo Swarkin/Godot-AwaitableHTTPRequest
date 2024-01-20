@@ -1,6 +1,6 @@
 extends HTTPRequest
 class_name AwaitableHTTPRequest
-## Awaitable HTTP Request Node v1.3 by swark1n
+## Awaitable HTTP Request Node v1.3.1 by swark1n
 
 ## A dataclass returned by [method AwaitableHTTPRequest.async_request].
 class HTTPResult extends RefCounted:
@@ -26,10 +26,10 @@ class HTTPResult extends RefCounted:
 	## Constructs a new [AwaitableHTTPRequest.HTTPResult] from the return value of [signal HTTPRequest.request_completed].
 	static func _from_array(a: Array) -> HTTPResult:
 		var h := HTTPResult.new()
-		h._result = a[0] as HTTPRequest.Result
-		h.status_code = a[1] as int
-		h.headers = _headers_to_dict(a[2] as PackedStringArray)
-		h.body = (a[3] as PackedByteArray).get_string_from_utf8()
+		@warning_ignore('unsafe_cast')h._result = a[0] as HTTPRequest.Result
+		@warning_ignore('unsafe_cast')h.status_code = a[1] as int
+		@warning_ignore('unsafe_cast')h.headers = _headers_to_dict(a[2] as PackedStringArray)
+		@warning_ignore('unsafe_cast')h.body = (a[3] as PackedByteArray).get_string_from_utf8()
 		return h
 
 	static func _headers_to_dict(headers_arr: PackedStringArray) -> Dictionary:
@@ -59,5 +59,5 @@ func async_request(url: String, method := HTTPClient.Method.METHOD_GET, custom_h
 	if e:
 		return HTTPResult._from_error(e)
 
-	var result := await request_completed as Array
+	@warning_ignore('unsafe_cast')var result := await request_completed as Array
 	return HTTPResult._from_array(result)
