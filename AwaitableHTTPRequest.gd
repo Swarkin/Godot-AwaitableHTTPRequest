@@ -1,22 +1,22 @@
-extends HTTPRequest
 class_name AwaitableHTTPRequest
-## Awaitable HTTP Request Node v1.4.0 by swark1n
+extends HTTPRequest
+## Awaitable HTTP Request Node v1.5.2 by swark1n
 
-signal request_finished			## Emits once the current request finishes, right before [member is_requesting] is set to false.
+signal request_finished		## Emits once the current request finishes, right after [member is_requesting] is set to false.
 var is_requesting := false  ## Whether the node is busy performing a request.
 
 ## A dataclass returned by [method AwaitableHTTPRequest.async_request].
 class HTTPResult extends RefCounted:
-	var _error: Error									## Returns the [method HTTPRequest.request] error, [constant Error.OK] otherwise.
-	var _result: HTTPRequest.Result		## Returns the [annotation HTTPRequest] error, [constant HTTPRequest.RESULT_SUCCESS] otherwise.
-	var success: bool:								## Checks whether [member _error] and [member _result] aren't in an error state.[br][b]Note:[/b] This does not return false if [member status_code] is >= 400, see [code]https://developer.mozilla.org/en-US/docs/Web/HTTP/Status[/code].
+	var _error: Error				## Returns the [method HTTPRequest.request] error, [constant Error.OK] otherwise.
+	var _result: HTTPRequest.Result	## Returns the [annotation HTTPRequest] error, [constant HTTPRequest.RESULT_SUCCESS] otherwise.
+	var success: bool:				## Checks whether [member _error] and [member _result] aren't in an error state.[br][b]Note:[/b] This does not return false if [member status_code] is >= 400, see [code]https://developer.mozilla.org/en-US/docs/Web/HTTP/Status[/code].
 		set(v): pass
 		get: return true if (_error == OK and _result == HTTPRequest.RESULT_SUCCESS) else false
 
-	var status_code: int							## The response status code.
-	var headers: Dictionary						## The response headers.
-	var body: String									## The response body.
-	var json: Dictionary:							## Attempt to parse [member body] into a [Dictionary], returns null on failure.
+	var status_code: int			## The response status code.
+	var headers: Dictionary			## The response headers.
+	var body: String				## The response body.
+	var json: Variant:				## Attempt to parse [member body] into a [Dictionary] or [Array], returns null on failure.
 		set(v): pass
 		get: return JSON.parse_string(body)
 
@@ -29,10 +29,10 @@ class HTTPResult extends RefCounted:
 	## Constructs a new [AwaitableHTTPRequest.HTTPResult] from the return value of [signal HTTPRequest.request_completed].
 	static func _from_array(a: Array) -> HTTPResult:
 		var h := HTTPResult.new()
-		@warning_ignore('unsafe_cast')h._result = a[0] as HTTPRequest.Result
-		@warning_ignore('unsafe_cast')h.status_code = a[1] as int
-		@warning_ignore('unsafe_cast')h.headers = _headers_to_dict(a[2] as PackedStringArray)
-		@warning_ignore('unsafe_cast')h.body = (a[3] as PackedByteArray).get_string_from_utf8()
+		@warning_ignore('unsafe_cast') h._result = a[0] as HTTPRequest.Result
+		@warning_ignore('unsafe_cast') h.status_code = a[1] as int
+		@warning_ignore('unsafe_cast') h.headers = _headers_to_dict(a[2] as PackedStringArray)
+		@warning_ignore('unsafe_cast') h.body = (a[3] as PackedByteArray).get_string_from_utf8()
 		return h
 
 	static func _headers_to_dict(headers_arr: PackedStringArray) -> Dictionary:
@@ -67,7 +67,7 @@ func async_request(url: String, method := HTTPClient.Method.METHOD_GET, custom_h
 	@warning_ignore('unsafe_cast')
 	var result := await request_completed as Array
 
-	request_finished.emit()
 	is_requesting = false
+	request_finished.emit()
 
 	return HTTPResult._from_array(result)
