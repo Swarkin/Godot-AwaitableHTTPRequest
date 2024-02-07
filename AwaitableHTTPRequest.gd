@@ -15,7 +15,8 @@ class HTTPResult extends RefCounted:
 
 	var status_code: int			## The response status code.
 	var headers: Dictionary			## The response headers.
-	var body: String				## The response body.
+	var body: String				## The response body as a String.
+	var body_raw: PackedByteArray	## The response body as a PackedByteArray.
 	var json: Variant:				## Attempt to parse [member body] into a [Dictionary] or [Array], returns null on failure.
 		set(v): pass
 		get: return JSON.parse_string(body)
@@ -33,6 +34,7 @@ class HTTPResult extends RefCounted:
 		@warning_ignore('unsafe_cast') h.status_code = a[1] as int
 		@warning_ignore('unsafe_cast') h.headers = _headers_to_dict(a[2] as PackedStringArray)
 		@warning_ignore('unsafe_cast') h.body = (a[3] as PackedByteArray).get_string_from_utf8()
+		@warning_ignore('unsafe_cast') h.body_raw = (a[3] as PackedByteArray)
 		return h
 
 	static func _headers_to_dict(headers_arr: PackedStringArray) -> Dictionary:
