@@ -50,8 +50,8 @@ class HTTPResult extends RefCounted:
 ##@export var http: AwaitableHTTPRequest
 ##
 ##func _ready() -> void:
-##        http = AwaitableHTTPRequest.new()
-##        add_child(http)
+##    http = AwaitableHTTPRequest.new()
+##    add_child(http)
 ##    var r := await http.async_request('https://api.github.com/users/swarkin')
 ##
 ##    if r.success:
