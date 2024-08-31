@@ -50,6 +50,8 @@ class HTTPResult extends RefCounted:
 ##@export var http: AwaitableHTTPRequest
 ##
 ##func _ready() -> void:
+##        http = AwaitableHTTPRequest.new()
+##        add_child(http)
 ##    var r := await http.async_request('https://api.github.com/users/swarkin')
 ##
 ##    if r.success:
@@ -57,7 +59,7 @@ class HTTPResult extends RefCounted:
 ##        print(r.headers['Content-Type'])  # application/json
 ##        print(r.json['bio'])              # fox.
 ##[/codeblock]
-func async_request(url: String, method := HTTPClient.Method.METHOD_GET, custom_headers := PackedStringArray(), request_body := '') -> HTTPResult:
+func async_request(url: String, custom_headers := PackedStringArray(), method := HTTPClient.Method.METHOD_GET, request_body := '') -> HTTPResult:
 	is_requesting = true
 
 	var e := request(url, custom_headers, method, request_body)
