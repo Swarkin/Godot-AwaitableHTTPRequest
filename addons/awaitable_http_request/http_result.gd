@@ -19,7 +19,7 @@ func status_ok() -> bool:
 
 ## Checks whether the [member status] is between 400 and 599 (inclusive), see [url]https://developer.mozilla.org/en-US/docs/Web/HTTP/Status[/url].
 func status_err() -> bool:
-	return status >= 400 and status < 599
+	return status >= 400 and status < 600
 
 ## The response body as a [String].[br]
 ## For other formatting (ascii, utf16, ...) or special use-cases (file I/O, ...), it is possible to access the raw body's [member bytes].[br]
