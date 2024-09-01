@@ -3,7 +3,7 @@ extends EditorPlugin
 
 
 func _enter_tree():
-	pass
+	add_custom_type("AwaitableHTTPRequest", "HTTPRequest", preload("awaitable_http_request.gd"), preload("icon.png"))
 
 func _exit_tree():
-	pass
+	remove_custom_type("AwaitableHTTPRequest")
