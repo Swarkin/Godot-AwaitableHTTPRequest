@@ -1,4 +1,4 @@
 * text=auto eol=lf
 
-/**                         export-ignore
-/AwaitableHTTPRequest.gd    !export-ignore
+/.gitattributes export-ignore
+/README.md      export-ignore
