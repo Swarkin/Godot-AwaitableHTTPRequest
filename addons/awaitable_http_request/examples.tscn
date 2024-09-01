@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnqsp15ey3wrl"]
+
+[ext_resource type="Script" path="res://addons/awaitable_http_request/awaitable_http_request.gd" id="1_b05hb"]
+
+[sub_resource type="GDScript" id="GDScript_qphse"]
+resource_name = "example"
+script/source = "extends Node
+
+@export var http: AwaitableHTTPRequest
+
+
+func _ready() -> void:
+	print(\"Example 1: JSON API\")
+	var data := await request_api()
+	if not data.is_empty():
+		var user := data[\"login\"] as String
+		print(\"User: \", user)
+
+	print(\"\\nExample 2: Downloading an image\")
+	var bytes := await request_image()
+	if not bytes.is_empty():
+		# Snippet for loading a PackedByteArray into an Image,
+		# as well as an ImageTexture to use in your app/game.
+		#var img := Image.new()
+		#img.load_png_from_buffer(bytes)
+		#var tex := ImageTexture.create_from_image(img)
+
+		var path := OS.get_system_dir(OS.SYSTEM_DIR_DOWNLOADS)+\"/image.png\"
+		var file := FileAccess.open(path, FileAccess.WRITE)
+		if not file:
+			push_error(\"Failed to save image.\")
+			return
+
+		file.store_buffer(bytes)
+		print(\"Downloaded and saved a random image to %s, take a look!\" % path)
+
+
+#region Example 1: JSON API
+func request_api() -> Dictionary:
+	var resp := await http.async_request(
+		\"https://api.github.com/users/swarkin\",
+		PackedStringArray([ # headers
+			\"accept: application/vnd.github+json\",
+			\"user-agent: Swarkin/AwaitableHTTPRequest/2.0.0\",
+		]),
+	)
+
+	if !resp.success() or resp.status_err():
+		push_error(\"Request failed.\")
+		return {}
+
+	print(\"Status code: \", resp.status)
+	print(\"Content-Type:\", resp.headers[\"content-type\"])
+
+	var json := resp.body_as_json()
+	if not json:
+		push_error(\"JSON invalid.\")
+		return {}
+
+	return json as Dictionary
+#endregion
+
+#region Example 2: Downloading an image
+func request_image() -> PackedByteArray:
+	var resp := await http.async_request(\"https://picsum.photos/256\")
+	if !resp.success() or resp.status_err():
+		push_error(\"Request failed.\")
+		return PackedByteArray()
+
+	return resp.bytes
+#endregion
+"
+
+[node name="Press F6 to run examples" type="Node" node_paths=PackedStringArray("http")]
+editor_description = "This scene is not required and may be deleted freely."
+script = SubResource("GDScript_qphse")
+http = NodePath("AwaitableHTTPRequest")
+
+[node name="AwaitableHTTPRequest" type="HTTPRequest" parent="."]
+script = ExtResource("1_b05hb")
