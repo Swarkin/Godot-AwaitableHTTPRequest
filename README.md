@@ -23,4 +23,8 @@ func _ready() -> void:
 
 See `examples.tscn` for more.
 
+---
+
 > Available on the [Godot Asset Library](https://godotengine.org/asset-library/asset/2502)
+
+<sub>Requires Godot 4.1</sub>
