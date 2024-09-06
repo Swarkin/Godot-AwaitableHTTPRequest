@@ -26,8 +26,8 @@ var is_requesting := false  ## Whether the node is busy performing a request. Th
 ## [/codeblock]
 func async_request(url: String, custom_headers := PackedStringArray(), method := HTTPClient.Method.METHOD_GET, request_data := "") -> HTTPResult:
 	if is_requesting:
-		push_error("AwaitableHTTPRequest is busy performing a request.")
-		return
+		push_warning("AwaitableHTTPRequest is busy performing a request.")
+		return HTTPResult._from_error(Error.ERR_BUSY)
 
 	is_requesting = true
 
