@@ -3,3 +3,4 @@
 /.gitattributes export-ignore
 /example.png    export-ignore
 /README.md      export-ignore
+.github         export-ignore
