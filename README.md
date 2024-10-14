@@ -13,7 +13,7 @@ Here is an example with minimal error-handling:
 
 func _ready() -> void:
     http = AwaitableHTTPRequest.new()
-	add_child(http)
+    add_child(http)
     var resp := await http.async_request("https://api.github.com/users/swarkin")
     if resp.success():
         print(resp.status)                   # 200
