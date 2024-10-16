@@ -13,11 +13,11 @@ var is_requesting := false  ## Whether the node is busy performing a request. Th
 ## [br]
 ## Here is an example with minimal error-handling:
 ## [codeblock]
-## @export var http: AwaitableHTTPRequest
+## extends AwaitableHTTPRequest
 ##
 ## func _ready() -> void:
-##     var resp := await http.async_request("https://api.github.com/users/swarkin")
-##     if resp.success():
+##     var resp := await async_request("https://api.github.com/users/swarkin")
+##     if resp.success() and resp.status_ok():
 ##         print(resp.status)                   # 200
 ##         print(resp.headers["content-type"])  # application/json
 ##
