@@ -1,6 +1,6 @@
 class_name AwaitableHTTPRequest
 extends HTTPRequest
-## [img width=64]res://addons/awaitable_http_request/icon.png[/img]   [url=https://github.com/Swarkin/Godot-AwaitableHTTPRequest]AwaitableHTTPRequest[/url] 2.0.0 by Swarkin & [url=https://github.com/Swarkin/Godot-AwaitableHTTPRequest/graphs/contributors]contributors[/url].
+## [img width=64]res://addons/awaitable_http_request/icon.png[/img]   [url=https://github.com/Swarkin/Godot-AwaitableHTTPRequest]AwaitableHTTPRequest[/url] 2.2.0 by Swarkin & [url=https://github.com/Swarkin/Godot-AwaitableHTTPRequest/graphs/contributors]contributors[/url].
 # View the formatted documentation in Godot by pressing F1 and typing "AwaitableHTTPRequest"!
 
 signal request_finished     ## Emits once the current request finishes, right after [member is_requesting] is set to false.
