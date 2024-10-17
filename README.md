@@ -1,4 +1,4 @@
-<img alt="project icon: syntax-highlighted text reading 'await http dot request()'" src="addons/awaitable_http_request/icon.png" width="64">
+<img alt="project icon: syntax-highlighted text reading 'await http dot request'" src="addons/awaitable_http_request/icon.png" width="64">
 
 ## AwaitableHTTPRequest Node for Godot 4
 
@@ -6,19 +6,17 @@ This addon makes HTTP requests much more convenient to use by introducing the `a
 
 ### Usage
 
-Here is an example with minimal error-handling:
-
 ```py
-@export var http: AwaitableHTTPRequest
+extends AwaitableHTTPRequest
 
 func _ready() -> void:
-    var resp := await http.async_request("https://api.github.com/users/swarkin")
-    if resp.success():
-        print(resp.status)                   # 200
-        print(resp.headers["content-type"])  # application/json
+	var resp := await async_request("https://api.github.com/users/swarkin")
+	if resp.success() and resp.status_ok():
+		print(resp.status)                   # 200
+		print(resp.headers["content-type"])  # application/json
 
-        var json = resp.body_as_json()
-        print(json["login"])                 # Swarkin
+		var json = resp.body_as_json()
+		print(json["login"])                 # Swarkin
 ```
 
 See `examples.tscn` for more.

@@ -41,7 +41,7 @@ func request_api() -> Dictionary:
 		\"https://api.github.com/users/swarkin\",
 		PackedStringArray([ # headers
 			\"accept: application/vnd.github+json\",
-			\"user-agent: Swarkin/AwaitableHTTPRequest/2.0.0\",
+			\"user-agent: Swarkin/AwaitableHTTPRequest/2.2.0\",
 		]),
 	)
 
