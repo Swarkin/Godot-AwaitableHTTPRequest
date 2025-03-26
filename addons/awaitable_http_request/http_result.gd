@@ -54,7 +54,7 @@ static func _from_array(a: Array) -> HTTPResult:
 static func _headers_to_dict(headers_arr: PackedStringArray) -> Dictionary:
 	var dict := {}
 	for h in headers_arr:
-		var split := h.split(":")
+		var split := h.split(":", true, 1)
 		dict[split[0].to_lower()] = split[1].strip_edges()
 
 	return dict
